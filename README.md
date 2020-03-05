@@ -56,7 +56,8 @@ Interfaces cannot introduce new class fields or constructors, they can however i
   
   boolean shouldPrint(int number);
 
-}```
+}
+```
 
 An interface can be implemented by a class by appending `:` followed by a list of interfaces to append. Here is an example: `MyClass : MyInterface, Comparable`
 
