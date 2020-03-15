@@ -44,7 +44,8 @@ MyClassName {
 A class can be declared as an interface by specifying `interface` before the class name. The class declaration would then look as such: `interface MyInterface {...`
 
 Interfaces cannot introduce new class fields or constructors, they can however introduce new methods.  Method bodies can either be defined or undefined in an interface as follows:
-```interface MyInterface {
+```
+interface MyInterface {
 
   void count(int number) {
     for(int i=0; i < number; i++) {
