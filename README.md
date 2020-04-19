@@ -179,12 +179,24 @@ This loop is executed as follows:
 
 #### Enhanced For loop
 
+TODO
+
 #### Continue / Break
 
-### Exception throwing catching
+TODO
+
+### Exception throwing / catching
 
 During program execution, certain exceptions might be thrown 
-Exception can be caught by using a try/catch block. This executes the code inside the block and if an Exception is thrown which is specified inside the 
+Exception can be caught by using a try/catch block. This executes the code inside the block and if an Exception is thrown which is one of the types specified inside the catch block. Here is a typical try/catch block: 
+```
+try {
+ int test = Integer.parseInt(someString);
+} catch (NumberFormatException e){
+ print "Could not format string to number!";
+}
+```
+If the function parseInt throws a NumberFormatException, then the currently executing block will be immediately interrupted, and the block following the catch clause with the print function will be executed. 
 
 ### Class "attaching"
 
