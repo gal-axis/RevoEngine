@@ -1,3 +1,5 @@
+<img src="icon.png" align="right" />
+
 # RevoEngine
 RevoEngine is a java-scripting engine which opens up your program and allows users to create their own scripts using "Revo", which is a fancy word for a custom language which is heavily inspired by Java.
 
