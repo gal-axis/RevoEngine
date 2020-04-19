@@ -1,9 +1,9 @@
 # RevoEngine
-RevoEngine is a java-scripting engine which opens up your program and allows users to create their own scripts using "RevoScript", which is a fancy word for a language that supports a subset of java instructions.
+RevoEngine is a java-scripting engine which opens up your program and allows users to create their own scripts using "Revo", which is a fancy word for a custom language which is heavily inspired by Java.
 
-The goal of RevoEngine was to allow users to script a game or program and introduce code on-the-fly without having to restart the application. Furthermore RevoEngine should work on android, desktop, headless environments and any other platform supporting Java. As such, there should be as little usage of reflection as possible.
+The goal of RevoEngine was to allow users to script a game or program and introduce code on-the-fly without having to restart the application and in a sandboxed and safe environment. Furthermore the goal of RevoEngine is that it should work on android, desktop, headless environments and any other platform supporting Java. As such, the usage of reflection should be kept to an absolute minimum.
 
-Another of the must-have goals was for the generated code to be able to extend Java classes. This was made possible by using the Adapter pattern.
+Another of the must-have goals was for the generated code to be able to extend Java classes. This is made possible by generating all the code required for Revo scripts to attach to Java ahead of time using a custom "RevoGenerator" tool.
 
 ## RevoScript Language
 
