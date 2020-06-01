@@ -22,39 +22,90 @@ Comments can be placed anywhere within a script and have two variations:
 
 ### Classes
 
+Classes are containers which can contain functionality (methods) and data (fields)!
 The class declaration syntax is as follows:
 ```
-MyClassName {
-  
-  Type1 foo;
-  Type2 bar;
-  
-  new(Type1 constructorParameter) {
-    this.foo = constructorParameter;
-    methodOne();
-  }
-  
-  void methodOne() {
-    print "Accessed methodOne!";
-  }
-  
-  boolean compareFoo(Type1 comparing) {
-    return foo == comparing;
-  }
+MyClass {
 }
 ```
-So simply providing the name of the class, followed by a block is enough!
+So simply providing the name of the class, followed by a block is all you need!
 
-#### Interfaces
+In order to instantiate a class (create a new object from it), you simply use the new operator as such: `new MyClass();`
+Depending on which parameters you put into the round brackets `()` you will call a different constructor! If there is no constructor specified, then the class will automatically have a no-argument constructor generated.
 
-A class can be declared as an interface by specifying `interface` before the class name. The class declaration would then look as such: `interface MyInterface {...`
 
-Interfaces cannot introduce new class fields or constructors, they can however introduce new methods to implementing classes.
+#### Class Fields
 
-An interface can be implemented by a class by appending `:` followed by a list of interfaces to append. 
-Here is an example: `MyClass : MyInterface, Comparable`
+Classes have so-called fields which can be used to store objects for later retrieval.
+To define a class field simply specify a type, followed by the name you want to assign to the field. Here is an example:
+```
+MyClass {
+ float myFloat = 0.1F;
+ int secondValue;
+}
+```
+If you do not assign a value to the field, it will either be `null` for Objects or the default value for primitive types (see primitive type definitions further below).
 
-When an interface is implemented, the implementing class must ensure that all methods with undefined bodies are specified!
+In order to obtain a field value from a class, simply create a new object of the class and then access the field by using a dot and then the field name. Here is an example: 
+```
+MyClass created = new MyClass();
+created.myFloat = 4.0F;
+print created.myFloat;
+```
+This code will first create an instance of MyClass and assign it to the field with the name `created`. Then, it will set the value of the field `myFloat` inside `created` to 4.0. Finally, the value of `myFloat` inside `created` will be printed to the console.
+
+#### Class methods
+
+An object of a certain class can execute certain functionality by defining methods.
+To define a method first write the type of value you want, followed by the method name and the parameters of a method in round brackets. Finally, end it with the code block to be executed as follows:
+```
+MyClass {
+
+ int getNumberThree() {
+  return 3;
+ }
+
+}
+```
+
+This method can then be called by executing it on an instance of the defining class. Here is an example:
+```
+MyClass test = new MyClass();
+print test.getNumberThree();
+```
+This will simply create a new MyClass value and assign it to the field called `test`. Then, it will call the method inside MyClass and print the returned value (in our case, 3).
+
+If you do not want the method to return a value, simply set its return type to `void`. You can then end method execution by simply executing `return;`. Here is an example:
+```
+MyClass {
+
+ boolean endEarly = true;
+
+ void voidMethod() {
+  if (endEarly) {
+   print "Early stop!";
+   return;
+  }
+  print "Normal execution!";
+ }
+ 
+}
+```
+In this example, the class will print "Normal Execution!" to the console only if we did not set the `endEarly` field to `true` after creating an object of the class `MyClass`. An example using both:
+```
+MyClass executions = new MyClass();
+executions.voidMethod();
+executions.endEarly = false;
+executions.voidMethod();
+```
+This code will first print "Early stop!", followed by "Normal execution!".
+
+If you want to only define methods but not give it any code, simply replace the brackets with a semicolon like so:
+```
+MyClass {
+ void myMethod(int parameter);
+}
+```
 
 #### Object inheritance, super classes
 
@@ -62,36 +113,32 @@ Any non-interface class can extend another class by specifying the to-extend cla
 
 This will inherit all fields, methods and interfaces from the superclass!
 
-### Fields
+#### Interfaces
 
-Every Revo class has fields, which carry a value of a specific type.
+A class can be declared as an interface by specifying `interface` before the class name. The class declaration would then look as such: `interface MyInterface {...`
 
-#### Field declaration
+Interfaces are a special type of class. They cannot introduce class fields or constructors, they can however introduce new methods to the classes which implement them.
 
-A class field can be simply declared using `Type variable;`
-Fields can be initialized during declaration or at a later time using the `=` operator. For example `int foo = 3;`
+An interface can be implemented by a class by appending `:` followed by a list of interfaces to append. 
+Here is an example: `MyClass : MyInterface, Comparable`
 
-A field name must be unique for any given class structure. This means that a class `Foo` extending class `Bar` cannot define a field called `myField` if the superclass `Bar` already defines a field with that name.
+One can implement as many interfaces as one wishes. Classes which inherit from interfaces must ensure that all methods of the implemented interfaces with undefined bodies are declared!
 
-#### Field calls
+#### Overriding methods
 
-A class field can be accessed using the `.` operator. For example: `myObject.foo();`
-If a field is declared within a method carrying the same name as a class field, it can be accessed using the `this` operator. Here is an example:
+When a method matches the signature of a method defined in one of the superclasses or implementing interfaces, the `override` keyword should be attached to the method in order to signify that this method was defined in those already and you're changing the method's behavior. 
+
+While not doing this will result in only a warning instead of an error, it is vital as the syntax of a script can become much clearer due to it.
+As an example, let's think of the class `Foo` which defines the method `void myMethod(int test)`. If we have a class `Bar` extending `Foo` we can override the method using the following syntax:
 ```
-MyObject {
-  int field = 0;
-  
-  void myMethod(){
-    int field = 3;
-    print(field);
-    field = this.field;
-    print(field);
-  }
+override void myMethod(int test){
+  super.myMethod(test);
+  print "Test was executed: " + test;
 }
 ```
-In this example, the first print will output the number 3, whereas the next print will output 0!
+If you want to execute the original method's code, simply precede the method with `super.`
 
-#### Arrays
+### Arrays
 
 Arrays are a fixed-size collection of values which can be accessed using an index. An array can be defined by appending [] after defining the class type. For example: `int[] numbers;`
 Arrays have a set size and cannot be shrunk or grown mid-runtime. To access an array's element, simply call the array name, followed by an index surrounded by `[]` brackets (f.e.: `myArray[0]`, `myArray[i]` or `myArray[getIndex()`).
@@ -106,35 +153,6 @@ When declaring an array, it can be initialized in three possible ways:
     * When defining a field: `int[] myField = {0, 1, 2, 3};`
     * When calling a method `myArrayMethod(new int[] {0, 1, 2, 3});`
   * The latter syntax for array initalization can also be used for field declarations, however the former cannot be using when calling methods, as methods with the same names might require different types of arrays.
-
-### Methods
-
-Methods are a way of calling a set of instructions with specific parameters which are passed into the class
-
-#### Method Declaration
-
-Method bodies can either have a defined body of instuctions:
-```
-void printNumber(int number) {
-    print "My number is: " + number;
-}
-```
-Or have an undefined body and simply end with a semicolon:
-```
-boolean shouldPrint(int number);
-```
-
-When a method body is not specified, it simply returns the default return value of a primitive, or null and does not execute anything.
-
-#### Overriding methods
-
-When a method matches the signature of a method defined in one of the superclasses or implementing interfaces, the `override` keyword should be attached to the method in order to signify that this method was defined already. While not doing this will result in only a warning instead of an error, it is vital as the syntax of a script can become much clearer due to it.
-As an example, let's think of the interface `Foo` which defines the method `void myMethod(int test)`. If we have a class `Bar` implementing `Foo` we must override the method using the following syntax:
-```
-override void myMethod(int test){
-  print "Test was executed: " + test;
-}
-```
 
 ### Object Casting
 
@@ -152,38 +170,86 @@ TODO
 
 ### Lambdas
 
-TODO 
+If an interface defines only a single method, one can create a simple implementation of it by pointing to a method matching the method's signature (a signature being the target method's return value and parameter types). The syntax for this is to provide an object, followed by `::` and the method which should act as interface's target method body.
+Here is an example:
+```
+interface LambdaSample {
+  boolean doSomething(int parameter);
+}
+```
+This is our interface. In order to create a type of it we can do the following in a class:
+```
+MyClass {
+ 
+ new() {
+  LambdaSample conformIt = this::lambdaTest;
+  conformIt.doSomething(0);
+ }
+ 
+ boolean lambdaTest(int param) {
+  print "Executed doSomething with parameter: " + param;
+  return true;
+ }
+}
+```
+In this sample, we first create a type of `LambdaSample` from the definition of our `lambdaTest` method. This will basically create a hidden class which simply calls `lambdaTest` in our object when `doSomething` is called.
 
 ### Loops
  
-TODO 
+Loops can be used to repeat a specific block of code as many times as you need it to be repeated. There are various types of loops that you can use through your code based on your needs:
 
 #### Do / While
  
-TODO 
+This type of loop will execute the code inside the block first, before checking if the execution should be repeated at the end.
+The syntax is as follows:
+```
+do {
+ // Your code here
+} while (booleanValue);
+```
+After the code was executed and `booleanValue` returns false, the loop stops and code execution continues.
 
 #### While
 
-TODO 
+This type of loop will first check the condition before executing the code inside the block. Here is a sample:
+```
+while (booleanValue) {
+ // Your code here
+}
+```
+If `booleanValue` returns true, then the loop starts execution. When the block ends and `booleanValue` is still true, the loop restarts.
 
 #### For
 
 A for loop consists of three parameters separated by semi-colons (variable initializers, condition and statement) followed by a block body or a statement.
-Here is a typical example of a for loop which iterates through an array and prints out each value inside: `for(int i = 0; i < myArray.length; i++)print(myArray[i]);`
+Here is a typical example of a for loop which iterates through an array and prints out each value inside: 
+
+```
+for(int i = 0; i < myArray.length; i++) {
+ // Your code
+}
+```
+
 This loop is executed as follows:
 1. The first parameter defines a variable `i` and assigns it the value 0 (`int i=0;`). 
 2. The condition is checked whether the iteration should start (`i < myArray.length;`). 
-3. The statement after the for loop is executed (`print myArray[i];`).
+3. The statement or block of the loop is executed.
 4. After the statement is completed, the third parameter (`i++`) is executed. 
 5. Then, if the condition is still met (`i < myArray.length`) we go back to step 3!
 
 #### Enhanced For loop
 
-TODO
+If you want to iterate over an object implementing the `Iterable` interface (f.e. ArrayList, HashSet, HashMap) or any array and do not care about the index, simply use the enhanced for loop. This can be done as follows:
+```
+for(Object obj : myIterable) {
+ // Your code
+}
+```
+This will automatically go through the entire iterable object and always feed the next element's value into the `obj` variable. Make sure to make the type of the `obj` fit to whatever class values are present inside the `myIterable` object. 
 
 #### Continue / Break
 
-TODO
+If you want to interrupt the current loop or restart the execution, you can either use `break` or `continue`. Both of these commands immediately stop the loop execution and end the loop block, however `break` will stop the loop entierly, whereas `continue` will instead restart the loop body if the loop condition is still met (and execute the for-statement update).
 
 ### Exception throwing / catching
 
@@ -196,6 +262,7 @@ try {
  print "Could not format string to number!";
 }
 ```
+
 If the function parseInt throws a NumberFormatException, then the currently executing block will be immediately interrupted, and the block following the catch clause with the print function will be executed. 
 
 ### Class "attaching"
